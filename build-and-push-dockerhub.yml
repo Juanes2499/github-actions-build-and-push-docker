@@ -1,0 +1,19 @@
+name: Build And Push To Dockerhub
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ inputs.DOCKER_HUB_USERNAME }}
+          password: ${{ inputs.DOCKER_HUB_TOKEN }}
+
+      - name: Build and push docker image to DockerHub
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ inputs.DOCKER_FILE_PATH }}
+          push: true
+          tags:  ${{ inputs.DOCKER_HUB_USERNAME }}/${{ inputs.REPOSITORY_NAME }}:${{ inputs.TAG }}
